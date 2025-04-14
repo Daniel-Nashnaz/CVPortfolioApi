@@ -120,7 +120,3 @@ dotnet run
 Pull requests are welcome! Feel free to open issues or feature requests.
 
 ---
-
-## 📄 License
-
-[MIT](LICENSE)
