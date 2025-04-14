@@ -17,7 +17,7 @@ namespace GitHubServiceLib
 
         public GitHubService(IOptions<GitHubOptions> options)
         {
-            _client = new GitHubClient(new ProductHeaderValue("CVSite"));
+            _client = new GitHubClient(new ProductHeaderValue("CVPortfolioAPI"));
 
             if (!string.IsNullOrEmpty(options.Value.PersonalAccessToken))
             {
