@@ -19,8 +19,10 @@ namespace CVPortfolioApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            // Register GitHub options from configuration
             services.Configure<GitHubOptions>(Configuration.GetSection("GitHub"));
 
+            // Add GitHub services including the base service and its caching decorator
             services.AddGitHubServices();
 
             services.AddControllers();
@@ -45,7 +47,9 @@ namespace CVPortfolioApi
         {
             if (env.IsDevelopment())
             {
+                // Show detailed error information in development environment
                 app.UseDeveloperExceptionPage();
+                // Enable Swagger UI in development environment
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CVPortfolioApi v1"));
             }

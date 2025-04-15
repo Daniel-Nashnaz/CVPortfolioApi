@@ -15,6 +15,7 @@ namespace GitHubServiceLib
         private readonly GitHubClient _client;
         private string _username;
 
+        // Initializes GitHub client with authentication token
         public GitHubService(IOptions<GitHubOptions> options)
         {
             _client = new GitHubClient(new ProductHeaderValue("CVPortfolioAPI"));
@@ -25,16 +26,17 @@ namespace GitHubServiceLib
             }
         }
 
+        // Get current authenticated user's username if not already loaded
         private async Task EnsureUsername()
         {
             if (string.IsNullOrEmpty(_username))
             {
                 var user = await _client.User.Current();
-                Console.WriteLine(user);
                 _username = user.Login;
             }
         }
 
+        // Retrieves the user's repositories with detailed information
         public async Task<IEnumerable<RepositoryInfo>> GetPortfolio()
         {
             await EnsureUsername();
@@ -44,12 +46,10 @@ namespace GitHubServiceLib
 
             foreach (var repo in repos)
             {
+                // For each repo, gather additional information
                 var pullRequests = await _client.PullRequest.GetAllForRepository(repo.Owner.Login, repo.Name);
                 var languages = await _client.Repository.GetAllLanguages(repo.Owner.Login, repo.Name);
-                //var commits = await _client.Repository.Commit.GetAll(repo.Owner.Login, repo.Name);
-
-                //var lastCommit = commits.OrderByDescending(c => c.Commit.Author.Date).FirstOrDefault();
-
+               
                 result.Add(new RepositoryInfo
                 {
                     Name = repo.Name,
@@ -66,6 +66,7 @@ namespace GitHubServiceLib
             return result;
         }
 
+        // Search for public repositories based on optional criteria
         public async Task<IEnumerable<RepositoryInfo>> SearchRepositories(string repoName = null, Language? language = null, string username = null)
         {
             SearchRepositoriesRequest request = null;
@@ -107,6 +108,7 @@ namespace GitHubServiceLib
             return result;
         }
 
+        // Gets the timestamp of the latest activity for the authenticated user
         public async Task<DateTime?> GetLastActivityDate()
         {
             await EnsureUsername();
