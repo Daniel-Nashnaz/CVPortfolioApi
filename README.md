@@ -80,6 +80,17 @@ dotnet user-secrets set "GitHub:Token" "your_token_here"
 dotnet user-secrets set "GitHub:Username" "your_username"
 ```
 
+## 📁 This will generate a structure in your secrets.json like:
+
+```bash
+{
+  "GitHub": {
+    "PersonalAccessToken": "your_token_here"
+  }
+}
+
+```
+
 ---
 
 ## 📦 How to Run
